@@ -1,0 +1,18 @@
+import cv2
+import matplotlib.pyplot as plt
+A = cv2.imread("C:\\Users\\anand\\Pictures\\j.png")
+image1=cv2.cvtColor(A,cv2.COLOR_BGR2GRAY)
+#thresimage=cv2.Canny(image1,100,200)
+suc,thresimage=cv2.threshold(image1,127,255,0)
+image,counto,appr=cv2.findContours(thresimage,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+img=cv2.drawContours(A,counto,0,(0,255,0),3)
+M=cv2.moments(counto[3])
+cx=int(M['m10']/M['m00'])
+cy=int(M['m01']/M['m00'])
+print(image1.shape)
+plt.imshow(A)
+plt.scatter(cx,cy)
+print(cv2.contourArea(counto[3]))
+#cv2.imshow("Contour",img) 
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()

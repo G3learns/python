@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+img=cv2.imread("C:\\Users\\anand\\Pictures\\white noise.jpg",0)
+#kernel=np.ones([5,5],np.uint8)
+#imgtrans=cv2.erode(img,kernel,iterations=1)
+#kernel=np.ones([3,3],np.uint8)
+#imgtrans=cv2.dilate(img,kernel,iterations=1)
+#kernel=np.ones([5,5],np.uint8)
+#imgtrans=cv2.morphologyEx(img,cv2.MORPH_OPEN,kernel)
+#kernel=np.ones([5,5],np.uint8)
+#imgtrans=cv2.morphologyEx(img,cv2.MORPH_CLOSE,kernel)
+kernel=np.ones([5,5],np.uint8)
+imgopen=cv2.morphologyEx(img,cv2.MORPH_OPEN,kernel)
+imgtophat=cv2.morphologyEx(img,cv2.MORPH_TOPHAT,kernel)
+ret,imgnoise=cv2.threshold(imgtophat,40,255,cv2.THRESH_BINARY)
+notnoise=cv2.bitwise_not(imgnoise)
+nois=cv2.bitwise_and(imgopen,imgopen,mask=imgnoise)
+imgnonoise=cv2.bitwise_and(img,img,mask=notnoise)
+imag=cv2.add(nois,imgnonoise)
+cv2.imshow("J",imag)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+

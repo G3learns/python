@@ -1,0 +1,36 @@
+import cv2
+import numpy as np
+img=cv2.imread("C:\\Users\\anand\\Pictures\\Rose.png")
+img1=cv2.imread("C:\\Users\\anand\\Pictures\\RoseGarden.jpeg")  
+################Histogram Backpropagation using numpy#####################################
+#imghsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+#img1hsv=cv2.cvtColor(img1,cv2.COLOR_BGR2HSV)
+#M=cv2.calcHist([imghsv],[0,1],None,[180,256],[0,180,0,256])
+#I=cv2.calcHist([img1hsv],[0,1],None,[180,256],[0,180,0,256])
+#R=M/I
+#h,s,v=cv2.split(img1hsv)
+#B=R[h.ravel(),s.ravel()]
+#B=np.minimum(B,1)
+#B=B.reshape(img1hsv.shape[:2])
+#disc=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+#cv2.filter2D(B,-1,disc,B)
+#B=np.uint8(B)
+#cv2.normalize(B,B,0,255,cv2.NORM_MINMAX)
+#ret,thres=cv2.threshold(B,50,255,0)
+#cv2.imshow("",thres)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+################Histogram Backpropagation using numpy#####################################
+imgobj=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+imgthe=cv2.cvtColor(img1,cv2.COLOR_BGR2HSV)
+objhist=cv2.calcHist([imgobj],[0,1],None,[180,256],[0,180,0,256])
+cv2.normalize(objhist,objhist,0,255,cv2.NORM_MINMAX)
+bckprg=cv2.calcBackProject([imgthe],[0,1],objhist,[0,180,0,256],1)
+disc=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
+cv2.filter2D(bckprg,-1,disc,bckprg)
+res,thres=cv2.threshold(bckprg,50,255,0)
+thres=cv2.merge((thres,thres,thres))
+imgop=cv2.bitwise_and(img1,thres)
+cv2.imshow("",imgop)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

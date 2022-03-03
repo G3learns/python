@@ -1,0 +1,16 @@
+import cv2
+import numpy as np
+image1=cv2.imread("C:\\Users\\anand\\Pictures\\image1.jpg")
+#image1=cv2.resize(image1,(0,0),fx=0.35,fy=0.35)
+hsv_img=cv2.cvtColor(image1,cv2.COLOR_BGR2HSV)
+l_red=np.array([165,100,100])
+h_red=np.array([185,255,255])
+red_mask=cv2.inRange(hsv_img,l_red,h_red)
+bw_mask=cv2.bitwise_not(red_mask)
+red_imag=cv2.bitwise_and(image1,image1,mask=red_mask)
+bw_img=cv2.cvtColor(image1,cv2.COLOR_BGR2GRAY)
+bw_imgx=cv2.bitwise_and(bw_img,bw_img,mask=bw_mask)
+fin=cv2.add(red_imag,cv2.cvtColor(bw_imgx,cv2.COLOR_GRAY2BGR))
+cv2.imwrite("C:\\Users\\anand\\Pictures\\RedTShirt.jpg",fin)
+cv2.waitKey(0)
+cv2.destroyAllWindows()  

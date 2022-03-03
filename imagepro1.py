@@ -1,0 +1,18 @@
+import cv2
+import numpy as np
+garden=cv2.imread("C:\\Users\\anand\\Pictures\\Garden.jpg")
+gry=cv2.cvtColor(garden,cv2.COLOR_BGR2HSV)
+bw=cv2.cvtColor(garden,cv2.COLOR_BGR2GRAY)
+l_red=np.array([25, 52, 72])
+h_red=np.array([102, 255, 255])
+red_mask=cv2.inRange(gry,l_red,h_red)
+bw_mask=cv2.bitwise_not(red_mask)
+red_img=cv2.bitwise_and(garden,garden,mask=red_mask)
+bw_img=cv2.bitwise_and(bw,bw,mask=bw_mask)
+bw_img=cv2.cvtColor(bw_img,cv2.COLOR_GRAY2BGR)
+#x,mak=cv2.threshold(red_mask,10,255,cv2.THRESH_BINARY)
+#red_img=cv2.bitwise_and(garden,garden,mask=mak)
+gimag=cv2.add(red_img,bw_img)
+cv2.imshow("Image",gimag)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
